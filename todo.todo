@@ -32,4 +32,5 @@ Livraison
 
 Repartition des taches:
 -Marouane: creation de base de donnee mysql 10 min
--Toavina: initialisation du dossier config: 
+-Toavina: initialisation du dossier "config" de notre base de donnee: database.php,config.php,routes.php,index.php 10 min
+-Itokiana: Creations des fichiers model 10 min
