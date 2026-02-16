@@ -39,13 +39,3 @@ table :
     besoin donateur 
     dons
     dispatch
-
-Model créée :
-Besoin.php
-Dispatch.php
-Don.php
-Model.php
-Region.php
-TypeBesoin.php
-Donateur.php
-Ville.php
