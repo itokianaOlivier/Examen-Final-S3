@@ -31,3 +31,11 @@ Désignation
 Quantité ou montant
 Date
 
+database
+table : 
+    region
+    ville 
+    type de besoin
+    besoin donateur 
+    dons
+    dispatch
