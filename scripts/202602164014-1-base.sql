@@ -1,77 +1,91 @@
-create database db_s2_ETU003339;
-use db_s2_ETU003339;
+-- =====================================
+-- BASE DE DONNÉES : BNGRC
+-- Projet final S3 – Février 2026
+-- =====================================
 
-create table region (
-    id int auto_increment primary key,
-    nom varchar(255) not null
+DROP DATABASE IF EXISTS db_s2_ETU003339;
+CREATE DATABASE db_s2_ETU003339;
+USE db_s2_ETU003339;
+
+-- ======================
+-- 1. REGION
+-- ======================
+CREATE TABLE region (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL
 );
 
-create table villes (
-    id int auto_increment primary key,
-    nom varchar(255) not null,
-    region_id int,
-    foreign key (region_id) references region(id)
+-- ======================
+-- 2. VILLES
+-- ======================
+CREATE TABLE villes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    region_id INT,
+    FOREIGN KEY (region_id) REFERENCES region(id)
 );
 
-create table type_besoin (
-    id int auto_increment primary key,
-    code varchar(255) not null,
-    libelle varchar(255) not null
+-- ======================
+-- 3. TYPE DE BESOIN
+-- ======================
+CREATE TABLE type_besoin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(255) NOT NULL,
+    libelle VARCHAR(255) NOT NULL
 );
 
-create table besoin (
-    id int auto_increment primary key,
-    type_besoin_id int,
-    ville_id int,
-    description text,
-    prix_unitaire decimal(10,2) not null,
-    quantite int not null,
-    quantite_restante int not null,
-    date_creation datetime default current_timestamp,
-    foreign key (type_besoin_id) references type_besoin(id),
-    foreign key (ville_id) references villes(id)
+-- ======================
+-- 4. BESOINS
+-- ======================
+CREATE TABLE besoin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type_besoin_id INT NOT NULL,
+    ville_id INT NOT NULL,
+    description TEXT,
+    prix_unitaire DECIMAL(10,2) NOT NULL,
+    quantite INT NOT NULL,
+    quantite_restante INT NOT NULL,
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (type_besoin_id) REFERENCES type_besoin(id),
+    FOREIGN KEY (ville_id) REFERENCES villes(id)
 );
 
-
-create table donateurs (
-    id int auto_increment primary key,
-    nom varchar(255) not null,
-    prenom varchar(255) not null,
-    email varchar(255) not null unique,
-    telephone varchar(20)
+-- ======================
+-- 5. DONATEURS
+-- ======================
+CREATE TABLE donateurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    prenom VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    telephone VARCHAR(20)
 );
 
-create table dons (
-    id int auto_increment primary key,
-    donateur_id int,
-    type_besoin_id int,
-    designation varchar(255),
-    quantite int,
-    montant decimal(10,2),
-    date_don datetime default current_timestamp,
-    foreign key (donateur_id) references donateurs(id),
-    foreign key (type_besoin_id) references type_besoin(id)
+-- ======================
+-- 6. DONS
+-- ======================
+CREATE TABLE dons (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    donateur_id INT NOT NULL,
+    type_besoin_id INT NOT NULL,
+    designation VARCHAR(255),
+    quantite INT DEFAULT NULL,
+    montant DECIMAL(10,2) DEFAULT NULL,
+    date_don DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (donateur_id) REFERENCES donateurs(id),
+    FOREIGN KEY (type_besoin_id) REFERENCES type_besoin(id)
 );
 
-
-create table attributions (
-    id int auto_increment primary key,
-    besoin_id int,
-    donateur_id int,
-    date_attribution datetime default current_timestamp,
-    foreign key (besoin_id) references besoin(id),
-    foreign key (donateur_id) references donateurs(id)
+-- ======================
+-- 7. DISPATCH (ATTRIBUTION DES DONS)
+-- ======================
+CREATE TABLE dispatch (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    don_id INT NOT NULL,
+    besoin_id INT NOT NULL,
+    quantite_attribuee INT DEFAULT NULL,
+    montant_attribue DECIMAL(10,2) DEFAULT NULL,
+    date_dispatch DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (don_id) REFERENCES dons(id),
+    FOREIGN KEY (besoin_id) REFERENCES besoin(id)
 );
-
-create table dispatch (
-    id int auto_increment primary key,
-    don_id int,
-    besoin_id int,
-    quantite_attribuee int,
-    montant_attribue decimal(10,2),
-    date_dispatch datetime default current_timestamp,
-    foreign key (don_id) references dons(id),
-    foreign key (besoin_id) references besoin(id)
-);
-
-
